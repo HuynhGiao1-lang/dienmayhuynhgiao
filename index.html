@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Hệ Thống Huỳnh Giao</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Tổng thể & Nền Xanh Pastel */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            color: #333;
+            overflow-x: hidden;
+            position: relative;
+            cursor: none; 
+        }
+
+        /* Container chính */
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Banner trên cùng */
+        .banner {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 20px;
+            margin-bottom: -50px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            animation: fadeIn 1s ease-out;
+        }
+
+        /* Hiệu ứng Kính Mờ (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            border-radius: 24px;
+            padding: 60px 20px 30px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+            animation: fadeInUp 1s ease-out;
+        }
+
+        /* Avatar nhịp thở */
+        .avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            object-fit: cover;
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin: 15px 0 5px;
+            color: #2c3e50;
+        }
+
+        p.bio {
+            font-size: 15px;
+            color: #555;
+            margin-bottom: 25px;
+        }
+
+        /* Tiêu đề từng nhóm Link */
+        .category-title {
+            text-align: left;
+            font-size: 16px;
+            font-weight: bold;
+            color: #0056b3;
+            margin: 25px 0 10px 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid rgba(0, 86, 179, 0.2);
+            padding-bottom: 5px;
+        }
+
+        /* Nút Links */
+        .link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: rgba(255, 255, 255, 0.7);
+            color: #333;
+            text-decoration: none;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .link-btn i {
+            position: absolute;
+            left: 20px;
+            font-size: 20px;
+        }
+
+        /* Hiệu ứng di chuột vào nút */
+        .link-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.8), 0 8px 20px rgba(0,0,0,0.1);
+            color: #0056b3;
+        }
+
+        /* Màu sắc Icon chuyên biệt */
+        .fa-facebook { color: #1877F2; }
+        .fa-tiktok { color: #000000; }
+        .fa-shopping-cart, .fa-store { color: #EE4D2D; }
+        .fa-instagram { color: #E1306C; }
+        .fa-at { color: #000000; } 
+        .fa-youtube { color: #FF0000; }
+        .fa-map-marker-alt { color: #EA4335; }
+        .fa-comment-dots { color: #0068FF; } /* Màu xanh đặc trưng của Zalo */
+
+        /* Nút Gọi Điện Thoại Rung Liên Tục */
+        .phone-wrapper {
+            margin-top: 30px;
+            text-align: center;
+        }
+        
+        .phone-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(45deg, #ff416c, #ff4b2b);
+            color: white;
+            text-decoration: none;
+            padding: 18px 40px;
+            border-radius: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(255, 75, 43, 0.4);
+            animation: shake 1.5s infinite;
+            transition: all 0.3s ease;
+        }
+        
+        .phone-btn i {
+            margin-right: 10px;
+            font-size: 22px;
+            animation: ring 1.5s infinite;
+        }
+
+        .phone-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 25px rgba(255, 75, 43, 0.6);
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7); }
+            50% { transform: scale(1.03); box-shadow: 0 0 0 15px rgba(255, 255, 255, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(-3deg); }
+            20%, 40%, 60%, 80% { transform: rotate(3deg); }
+        }
+
+        @keyframes ring {
+            0%, 100% { transform: rotate(0); }
+            10%, 30%, 50%, 70%, 90% { transform: rotate(-15deg); }
+            20%, 40%, 60%, 80% { transform: rotate(15deg); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Con trỏ chuột Custom */
+        .cursor-dot, .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px #ffffff;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Trái tim hồng rơi */
+        .heart {
+            position: fixed;
+            top: -10vh;
+            font-size: 1.5rem;
+            color: #ff758f;
+            filter: drop-shadow(0px 4px 6px rgba(255, 117, 143, 0.6));
+            pointer-events: none;
+            z-index: 1;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(110vh) rotate(360deg);
+            }
+        }
+
+        /* Responsive: Ẩn con trỏ trên Mobile */
+        @media (max-width: 768px) {
+            body, html { cursor: auto; }
+            .cursor-dot, .cursor-outline { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cursor-dot" id="cursor-dot"></div>
+    <div class="cursor-outline" id="cursor-outline"></div>
+    <div id="hearts-container"></div>
+
+    <div class="container">
+        <!-- Thay link ảnh banner của bạn -->
+        <img src="hinh/banner.png" class="banner" alt="Banner Huỳnh Giao">
+        
+        <div class="glass-card">
+            <!-- Thay link avatar của bạn -->
+            <img src="hinh/avt.png" class="avatar" alt="Avatar Huỳnh Giao">
+            <h1>Hệ Thống Huỳnh Giao</h1>
+            <p class="bio">Trang Trí Nội Thất - Thiết Bị Nhà Thông Minh Điện Máy - Điện Thoại - Laptop - Phụ Kiện - Xe Điện - Xe Đạp - Thiết Bị Âm Thanh</p>
+
+            <!-- Nhóm 1: Hệ Thống Fanpage -->
+            <div class="category-title">1. Hệ Thống Fanpage</div>
+            <a href="https://www.facebook.com/huynhgiao.home.tech?locale=vi_VN" target="_blank" class="link-btn">
+                <i class="fab fa-facebook"></i> Fanpage Trang Trí Nội Thất
+            </a>
+            <a href="https://www.facebook.com/cuahangxehuynhgiao/" target="_blank" class="link-btn">
+                <i class="fab fa-facebook"></i> Fanpage Xe Điện
+            </a>
+            <a href="https://www.facebook.com/DienmayHuynhGiao/" target="_blank" class="link-btn">
+                <i class="fab fa-facebook"></i> Fanpage Di Động
+            </a>
+            <a href="https://www.facebook.com/cuahanggiadunghuynhgiao" target="_blank" class="link-btn">
+                <i class="fab fa-facebook"></i> Fanpage Gia Dụng
+            </a>
+
+            <!-- Nhóm 2: Kênh TikTok -->
+            <div class="category-title">2. Kênh TikTok</div>
+            <a href="https://www.tiktok.com/@ttntdm.huynh.giao" target="_blank" class="link-btn">
+                <i class="fab fa-tiktok"></i> TikTok Cửa Hàng
+            </a>
+            <a href="https://www.tiktok.com/@xedienhuynhgiao" target="_blank" class="link-btn">
+                <i class="fab fa-tiktok"></i> TikTok Xe Điện
+            </a>
+            <a href="https://www.tiktok.com/@didonghuynhgiaonga5" target="_blank" class="link-btn">
+                <i class="fab fa-tiktok"></i> TikTok Điện Thoại
+            </a>
+            <a href="https://www.tiktok.com/@cuahanghuynhgiaocontent" target="_blank" class="link-btn">
+                <i class="fab fa-tiktok"></i> TikTok Content Cửa Hàng
+            </a>
+
+            <!-- Nhóm 3: Hỗ Trợ Zalo -->
+            <div class="category-title">3. Hỗ Trợ Zalo</div>
+            <a href="https://zalo.me/0918793709" target="_blank" class="link-btn">
+                <i class="fas fa-comment-dots"></i> Zalo: 0918.793.709
+            </a>
+            <a href="https://zalo.me/0344869324" target="_blank" class="link-btn">
+                <i class="fas fa-comment-dots"></i> Zalo: 0344.869.324
+            </a>
+            <a href="https://zalo.me/0356655982" target="_blank" class="link-btn">
+                <i class="fas fa-comment-dots"></i> Zalo: 0356.655.982
+            </a>
+
+            <!-- Nhóm 4: Thương Mại Điện Tử -->
+            <div class="category-title">4. Thương Mại Điện Tử</div>
+            <a href="https://shopee.vn/ttntdmhuynhgiao.n5?page=1&sortBy=pop&tab=0" target="_blank" class="link-btn">
+                <i class="fas fa-shopping-cart"></i> Shopee Cửa Hàng
+            </a>
+            <a href="https://www.lazada.vn/shop/huynh-giao-retail-system/" target="_blank" class="link-btn">
+                <i class="fas fa-store"></i> Lazada Cửa Hàng
+            </a>
+
+            <!-- Nhóm 5: Mạng Xã Hội Khác -->
+            <div class="category-title">5. Mạng Xã Hội Khác</div>
+            <a href="https://www.instagram.com/ttnt_dm_huynhgiao/" target="_blank" class="link-btn">
+                <i class="fab fa-instagram"></i> Instagram Cửa Hàng
+            </a>
+            <a href="https://www.threads.com/@ttnt_dm_huynhgiao" target="_blank" class="link-btn">
+                <i class="fas fa-at"></i> Threads Cửa Hàng
+            </a>
+            <a href="https://www.youtube.com/@hethongbanlehuynhgiao" target="_blank" class="link-btn">
+                <i class="fab fa-youtube"></i> YouTube Cửa Hàng
+            </a>
+
+            <!-- Nhóm 6: Vị trí cửa hàng (Google Maps) -->
+            <div class="category-title">6. Chi Nhánh Các Cửa Hàng</div>
+            <a href="https://maps.app.goo.gl/rDeZ5ikCp36xuV4u6" target="_blank" class="link-btn">
+                <i class="fas fa-map-marker-alt"></i> Bản Đồ Cửa Hàng 1
+            </a>
+            <a href="https://maps.app.goo.gl/fSD4JZ7mgMmpFXaF8" target="_blank" class="link-btn">
+                <i class="fas fa-map-marker-alt"></i> Bản Đồ Cửa Hàng 2
+            </a>
+            <a href="https://maps.app.goo.gl/qEjFNpWe9icsKrCt6" target="_blank" class="link-btn">
+                <i class="fas fa-map-marker-alt"></i> Bản Đồ Cửa Hàng 3
+            </a>
+            <a href="https://maps.app.goo.gl/G9j4KVSroyywUGrB6" target="_blank" class="link-btn">
+                <i class="fas fa-map-marker-alt"></i> Bản Đồ Cửa Hàng 4
+            </a>
+        </div>
+
+        <!-- Nút số điện thoại tổng đài -->
+        <div class="phone-wrapper">
+            <a href="tel:0356655982" class="phone-btn">
+                <i class="fas fa-phone-alt"></i> Gọi ngay cho chúng tôi
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const cursorDot = document.getElementById("cursor-dot");
+        const cursorOutline = document.getElementById("cursor-outline");
+
+        window.addEventListener("mousemove", function (e) {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        function createHeart() {
+            const heart = document.createElement("div");
+            heart.classList.add("heart");
+            heart.innerHTML = '<i class="fas fa-heart"></i>';
+            
+            heart.style.left = Math.random() * 100 + "vw";
+            heart.style.animationDuration = Math.random() * 5 + 5 + "s";
+            
+            const size = Math.random() * 1.5 + 0.8;
+            heart.style.fontSize = size + "rem";
+
+            document.getElementById("hearts-container").appendChild(heart);
+
+            setTimeout(() => {
+                heart.remove();
+            }, 10000);
+        }
+
+        setInterval(createHeart, 400);
+    </script>
+</body>
+</html>
